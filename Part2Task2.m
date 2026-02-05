@@ -1,15 +1,11 @@
 %% ASEN 3802 Lab 1 (Spring 2026) - Part 2 Task 2 (Case 2, OFF-CENTER LOAD)
-% Script version (NOT a function)
+% Script version 
 % Reads a TXT file, estimates load position from reactions, and compares
 % measured LVDT + F3D to equivalent beam model.
 %
-% Edit CASE2_TXT below to your file path.
 
 clear; clc; close all;
 
-%% -------------------------
-% USER INPUTS (edit these)
-% -------------------------
 CASE2_TXT = "Case 2 data.txt";   % <-- TXT file path
 
 % Geometry
@@ -22,19 +18,16 @@ A_mm2 = 39.57;    % [mm^2]
 c_mm  = 125.0;    % [mm]
 
 % Material
-E = 69e9;         % [Pa] Aluminum (change if lab specifies different)
+E = 69e9;         % [Pa] Aluminum 
 
-% Unit conversions (edit if your file units differ)
+% Unit conversions 
 LB2N = 4.4482216152605;
 IN2M = 0.0254;
 
 outDir = "task2_outputs";
 if ~exist(outDir, "dir"); mkdir(outDir); end
 
-%% -------------------------
 % Load the TXT file
-% -------------------------
-% Try to read as a table with detected import options (handles headers well)
 opts = detectImportOptions(CASE2_TXT, "FileType","text");
 % If your TXT is whitespace-delimited, make sure delimiter is whitespace:
 opts.Delimiter = {'\t',' ',';','|',','};   % robust; will auto-handle most
@@ -48,9 +41,7 @@ F3D     = T.Var5;   % Inline force
 LVDT_in = T.Var6;   % Midspan deflection
 
 
-%% -------------------------
 % Reactions and regression (position estimate)
-% -------------------------
 RA = F0 + F1;
 RB = F2;
 
@@ -78,9 +69,7 @@ fprintf("Fit R_B = mB*P + bB: mB=%.6g, bB=%.6g\n", mB, bB);
 fprintf("Estimated load location: x_est = %.6f m\n", x_est);
 fprintf("Nearest node: x_node = %.6f m (node #%d, bay=%.3f m)\n\n", x_node, nodeIdx, bay);
 
-%% -------------------------
 % Equivalent beam model @ midspan for point load at x_node
-% -------------------------
 I = I_mm4 * 1e-12;   % [m^4]
 A = A_mm2 * 1e-6;    % [m^2]
 c = c_mm  * 1e-3;    % [m]
@@ -111,9 +100,7 @@ Fi_meas = F3D - F3D0;
 
 fprintf("F3D preload correction: using row %d as baseline -> F3D0 = %.6g\n\n", idx0, F3D0);
 
-%% -------------------------
-% PLOTS (save to disk)
-% -------------------------
+% PLOTS
 Pline = linspace(min(P_lbf), max(P_lbf), 200);
 
 % 1) Reactions vs P + fits
@@ -153,9 +140,7 @@ saveas(gcf, fullfile(outDir, "task2_inline_force_txt.png"));
 
 fprintf("Saved plots to: %s\n", outDir);
 
-%% -------------------------
-% Local helper functions (script-local)
-% -------------------------
+% Local helper functions
 function colName = findColumn(vars, varsLower, candidates)
     if ~isstring(candidates); candidates = string(candidates); end
     cands = lower(regexprep(candidates, '\s+', ''));
