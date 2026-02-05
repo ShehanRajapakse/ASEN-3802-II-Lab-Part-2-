@@ -1,5 +1,4 @@
 %% ASEN 3802 Lab 1 (Spring 2026) - Part 2 Task 2 (Case 2, OFF-CENTER LOAD)
-% Script version 
 % Reads a TXT file, estimates load position from reactions, and compares
 % measured LVDT + F3D to equivalent beam model.
 %
@@ -29,7 +28,6 @@ if ~exist(outDir, "dir"); mkdir(outDir); end
 
 % Load the TXT file
 opts = detectImportOptions(CASE2_TXT, "FileType","text");
-% If your TXT is whitespace-delimited, make sure delimiter is whitespace:
 opts.Delimiter = {'\t',' ',';','|',','};   % robust; will auto-handle most
 T = readtable(CASE2_TXT, opts);
 % Assign columns by position (TXT has no headers)
@@ -138,8 +136,6 @@ title("Task 2 Case 2: Inline Force Trend Comparison");
 legend("Location","best");
 saveas(gcf, fullfile(outDir, "task2_inline_force_txt.png"));
 
-fprintf("Saved plots to: %s\n", outDir);
-
 % Local helper functions
 function colName = findColumn(vars, varsLower, candidates)
     if ~isstring(candidates); candidates = string(candidates); end
@@ -183,3 +179,4 @@ function Mmid = midspanMoment_pointLoad(a, P, L)
         Mmid = RA*x;
     end
 end
+
